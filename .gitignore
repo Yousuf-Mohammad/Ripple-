@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.*
+!.env.example
+*serviceAccount*.json
+google-services.json
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Expo / RN (used from P5)
+.expo/
+web-build/
+
+# Internal planning docs (kept local, not published)
+CLAUDE.md
+PLAN.md
