@@ -1,7 +1,8 @@
-import admin from 'firebase-admin';
+import { initializeApp, cert } from 'firebase-admin/app';
+import { getMessaging as getFirebaseMessaging, type Messaging } from 'firebase-admin/messaging';
 import { env, hasFirebaseConfig } from './env';
 
-let messaging: admin.messaging.Messaging | null = null;
+let messaging: Messaging | null = null;
 
 /**
  * Initialize Firebase Admin from env credentials.
@@ -15,14 +16,14 @@ export function initFirebase(): void {
     return;
   }
 
-  admin.initializeApp({
-    credential: admin.credential.cert({
+  const app = initializeApp({
+    credential: cert({
       projectId: env.FIREBASE_PROJECT_ID,
       clientEmail: env.FIREBASE_CLIENT_EMAIL,
       privateKey: env.FIREBASE_PRIVATE_KEY, // env.ts already turned literal \n into newlines
     }),
   });
-  messaging = admin.messaging();
+  messaging = getFirebaseMessaging(app);
   console.log('[firebase] admin initialized — FCM enabled');
 }
 
@@ -30,6 +31,6 @@ export function initFirebase(): void {
  * The messaging client, or `null` when FCM is disabled (no credentials).
  * Callers must no-op when this returns null.
  */
-export function getMessaging(): admin.messaging.Messaging | null {
+export function getMessaging(): Messaging | null {
   return messaging;
 }
