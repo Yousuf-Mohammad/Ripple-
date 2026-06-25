@@ -16,15 +16,24 @@ export function initFirebase(): void {
     return;
   }
 
-  const app = initializeApp({
-    credential: cert({
-      projectId: env.FIREBASE_PROJECT_ID,
-      clientEmail: env.FIREBASE_CLIENT_EMAIL,
-      privateKey: env.FIREBASE_PRIVATE_KEY, // env.ts already turned literal \n into newlines
-    }),
-  });
-  messaging = getFirebaseMessaging(app);
-  console.log('[firebase] admin initialized — FCM enabled');
+  try {
+    const app = initializeApp({
+      credential: cert({
+        projectId: env.FIREBASE_PROJECT_ID,
+        clientEmail: env.FIREBASE_CLIENT_EMAIL,
+        privateKey: env.FIREBASE_PRIVATE_KEY, // env.ts already turned literal \n into newlines
+      }),
+    });
+    messaging = getFirebaseMessaging(app);
+    console.log('[firebase] admin initialized — FCM enabled');
+  } catch (err) {
+    // Bad/placeholder credentials must not crash boot — disable FCM and continue.
+    messaging = null;
+    console.error(
+      '[firebase] init failed — FCM disabled (check FIREBASE_* credentials):',
+      err instanceof Error ? err.message : err,
+    );
+  }
 }
 
 /**
