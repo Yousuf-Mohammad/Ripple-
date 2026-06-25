@@ -54,3 +54,7 @@ them the API runs normally with push notifications disabled. See
 [`backend/README.md`](./backend/README.md) for environment variables, project structure, and
 the complete API reference.
 
+## License
+
+MIT
+
