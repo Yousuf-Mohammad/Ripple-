@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import authRoutes from './auth.routes';
+import postRoutes from './post.routes';
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.get('/health', (_req, res) => {
 
 // Feature routers.
 router.use('/auth', authRoutes);
+router.use('/posts', postRoutes);
 // router.use('/users', userRoutes);   // P4
-// router.use('/posts', postRoutes);   // P2/P3
 
 export default router;
