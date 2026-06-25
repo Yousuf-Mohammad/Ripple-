@@ -1,19 +1,35 @@
-import { hasFirebaseConfig } from './env';
+import admin from 'firebase-admin';
+import { env, hasFirebaseConfig } from './env';
+
+let messaging: admin.messaging.Messaging | null = null;
 
 /**
- * Firebase Admin initialization — STUB until phase P4.
+ * Initialize Firebase Admin from env credentials.
  *
- * In P0 we only verify whether credentials are configured. If they are absent,
- * this is a no-op and the server boots normally with FCM disabled. The real
- * `firebase-admin` init (and `admin.messaging()` usage) lands with the
- * notification service in P4.
+ * If credentials are absent this is a non-fatal no-op: the server boots normally
+ * with FCM disabled (push off). Called once from `server.ts` at bootstrap.
  */
 export function initFirebase(): void {
   if (!hasFirebaseConfig) {
-    console.warn('[firebase] No Firebase credentials found — FCM disabled (push notifications off)');
+    console.warn('[firebase] No credentials — FCM disabled (push off)');
     return;
   }
 
-  // Credentials present but real init is deferred to P4.
-  console.log('[firebase] Firebase credentials detected — admin init deferred to P4');
+  admin.initializeApp({
+    credential: admin.credential.cert({
+      projectId: env.FIREBASE_PROJECT_ID,
+      clientEmail: env.FIREBASE_CLIENT_EMAIL,
+      privateKey: env.FIREBASE_PRIVATE_KEY, // env.ts already turned literal \n into newlines
+    }),
+  });
+  messaging = admin.messaging();
+  console.log('[firebase] admin initialized — FCM enabled');
+}
+
+/**
+ * The messaging client, or `null` when FCM is disabled (no credentials).
+ * Callers must no-op when this returns null.
+ */
+export function getMessaging(): admin.messaging.Messaging | null {
+  return messaging;
 }
