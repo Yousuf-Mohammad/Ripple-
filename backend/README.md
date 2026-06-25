@@ -48,9 +48,23 @@ See [`.env.example`](./.env.example). Notes:
 
 ## API
 
-| Method | Path      | Auth | Returns             |
-| ------ | --------- | ---- | ------------------- |
-| GET    | `/health` | —    | `{ status: "ok" }`  |
+All errors use the envelope `{ "error": { "code", "message", "details" } }`.
+Protected routes (🔒) require `Authorization: Bearer <jwt>`.
 
-> Full endpoint docs (auth, posts, feed, interactions, fcm-token) are added as those
-> phases land. See `CLAUDE.md §5.3` for the complete contract.
+| Method | Path           | Auth | Body / Query                          | Returns               |
+| ------ | -------------- | ---- | ------------------------------------- | --------------------- |
+| GET    | `/health`      | —    | —                                     | `{ status: "ok" }`    |
+| POST   | `/auth/signup` | —    | `{ username, email, password }`       | `201 { user, token }` |
+| POST   | `/auth/login`  | —    | `{ emailOrUsername, password }`       | `{ user, token }`     |
+| GET    | `/auth/me`     | 🔒   | —                                     | `{ user }`            |
+
+**Auth notes**
+
+- `username`: 3–20 chars, lowercase `a–z`, `0–9`, `_`. `email`: valid email. `password`: min 8 chars.
+- `user` objects never include the password hash.
+- Errors: `422 VALIDATION_ERROR` (bad body), `409 USER_EXISTS` (duplicate signup),
+  `401 INVALID_CREDENTIALS` (bad login), `401 UNAUTHORIZED` / `INVALID_TOKEN` (missing/invalid bearer).
+- `/auth/*` is rate-limited more tightly than other routes.
+
+> Endpoint docs for posts, feed, interactions, and fcm-token are added as those phases
+> land. See `CLAUDE.md §5.3` for the complete contract.
