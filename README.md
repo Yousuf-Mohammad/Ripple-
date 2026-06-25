@@ -1,4 +1,5 @@
-# Ripple
+# Ripple 
+---------------------
 
 A lightweight, text-only social feed. Every interaction sends a *ripple* back to the
 author — a push notification (via Firebase Cloud Messaging) when their post is liked or
