@@ -1,5 +1,4 @@
-# Ripple 
----------------------
+# Ripple
 
 A lightweight, text-only social feed. Every interaction sends a *ripple* back to the
 author — a push notification (via Firebase Cloud Messaging) when their post is liked or
@@ -8,18 +7,33 @@ commented on.
 This is a monorepo with two apps:
 
 - **[`backend/`](./backend/README.md)** — Node.js + Express + TypeScript REST API
-  (MongoDB/Mongoose, JWT auth, FCM push). **Status: implemented** (auth, posts & feed,
-  interactions, notifications). See the backend README for setup and full API docs.
-- **`mobile/`** — React Native (Expo) app in TypeScript, shipped as an installable Android
-  APK. _(Scaffolded in a later phase.)_
+  (MongoDB/Mongoose, JWT auth, FCM push). **Status: implemented.** See the backend
+  README for setup and the full API reference.
+- **[`mobile/`](./mobile/README.md)** — React Native (Expo, TypeScript) app, shipped as
+  an installable Android APK. **Status: implemented** (auth, feed, create post,
+  like/comment, push). See the mobile README for setup and the APK build steps.
 
 ## What it does
 
-- **Auth** — signup / login with JWT.
+- **Auth** — signup / login with JWT (token kept in `expo-secure-store`, never plain storage).
 - **Posts** — create text posts; view a shared paginated feed (newest first); filter by username.
-- **Interactions** — like / unlike and comment on posts.
+- **Interactions** — like / unlike (optimistic) and comment on posts.
 - **Notifications** — the post author gets a push notification when someone likes or
   comments on their post (never for their own actions).
+
+## Download the app
+
+**Android APK (latest build):**
+<https://expo.dev/accounts/yousuf_mohammad/projects/ripple/builds/14ad1a3f-80ef-475f-b4da-5ac26981e705>
+
+Open that link on an Android device (or scan its QR) to install. The build talks to the
+backend at the URL baked into the `preview` profile (`eas.json` →
+`EXPO_PUBLIC_API_BASE_URL`), so the backend must be running and reachable at that address
+on the same network. To point it elsewhere, change that value and rebuild (see the
+[mobile README](./mobile/README.md#building-the-apk)).
+
+> Push notifications require native Firebase messaging and therefore an EAS/dev build —
+> they do **not** work in Expo Go.
 
 ## API at a glance
 
@@ -39,7 +53,9 @@ Protected routes (🔒) require `Authorization: Bearer <jwt>`.
 | POST   | `/posts/:id/comment`  | 🔒   | Comment (notifies the author)            |
 | GET    | `/posts/:id/comments` | 🔒   | Paginated comments (oldest first)        |
 
-## Quick start (backend)
+## Quick start
+
+### Backend
 
 ```bash
 cd backend
@@ -54,7 +70,29 @@ them the API runs normally with push notifications disabled. See
 [`backend/README.md`](./backend/README.md) for environment variables, project structure, and
 the complete API reference.
 
+### Mobile
+
+```bash
+cd mobile
+npm install
+# point the app at your backend (LAN IP for a physical device):
+echo "EXPO_PUBLIC_API_BASE_URL=http://<your-LAN-IP>:4000" > .env
+npm start              # Expo dev server (JS only — no push)
+```
+
+For a real APK (and for push to work), build with EAS — see the
+[mobile README](./mobile/README.md).
+
+## Tech stack
+
+| Layer    | Choice                                                              |
+| -------- | ------------------------------------------------------------------ |
+| Backend  | Node.js, Express, TypeScript, MongoDB + Mongoose                    |
+| Auth     | JWT (`jsonwebtoken`) + `bcrypt`                                     |
+| Push     | `firebase-admin` (server) · `@react-native-firebase/messaging` (client) |
+| Mobile   | React Native + Expo (SDK 54), TypeScript, React Navigation, axios  |
+| Build    | EAS Build → Android APK                                             |
+
 ## License
 
 MIT
-
