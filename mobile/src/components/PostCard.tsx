@@ -2,8 +2,9 @@ import { memo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import type { Post } from '../api/types';
-import { colors, fontSize, lineHeight, radius, spacing } from '../theme';
+import { colors, fontFamily, fontSize, lineHeight, radius, shadow, spacing } from '../theme';
 import { formatRelativeTime } from '../utils/relativeTime';
+import { Avatar } from './Avatar';
 import { LikeButton } from './LikeButton';
 
 export interface PostCardProps {
@@ -17,8 +18,11 @@ function PostCardComponent({ post, onToggleLike, onPressComments }: PostCardProp
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Text style={styles.author}>@{post.author.username}</Text>
-        <Text style={styles.time}>{formatRelativeTime(post.createdAt)}</Text>
+        <Avatar username={post.author.username} size={40} />
+        <View style={styles.headerText}>
+          <Text style={styles.author}>@{post.author.username}</Text>
+          <Text style={styles.time}>{formatRelativeTime(post.createdAt)}</Text>
+        </View>
       </View>
 
       <Text style={styles.text}>{post.text}</Text>
@@ -30,7 +34,7 @@ function PostCardComponent({ post, onToggleLike, onPressComments }: PostCardProp
           onPress={() => onToggleLike(post)}
         />
         <Pressable
-          style={styles.stat}
+          style={({ pressed }) => [styles.stat, pressed && styles.statPressed]}
           onPress={() => onPressComments(post)}
           hitSlop={8}
           accessibilityRole="button"
@@ -53,39 +57,54 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.lg,
-    gap: spacing.sm,
+    gap: spacing.md,
+    ...shadow.sm,
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    gap: spacing.md,
+  },
+  headerText: {
+    flex: 1,
+    gap: 1,
   },
   author: {
     fontSize: fontSize.md,
-    fontWeight: '700',
-    color: colors.primary,
+    fontFamily: fontFamily.semibold,
+    color: colors.text,
   },
   time: {
     fontSize: fontSize.sm,
-    color: colors.textMuted,
+    fontFamily: fontFamily.regular,
+    color: colors.textSubtle,
   },
   text: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.regular,
     color: colors.text,
     lineHeight: lineHeight.md,
   },
   footer: {
     flexDirection: 'row',
-    gap: spacing.xl,
+    alignItems: 'center',
+    gap: spacing.xs,
     marginTop: spacing.xs,
   },
   stat: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
+    paddingVertical: spacing.xs,
+    paddingHorizontal: spacing.sm,
+    borderRadius: radius.pill,
+  },
+  statPressed: {
+    backgroundColor: colors.surfaceAlt,
   },
   statText: {
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.medium,
     color: colors.textMuted,
   },
 });

@@ -26,6 +26,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   },
   android: {
     package: 'com.ripple.com',
+    // Resize the app window when the soft keyboard opens (native adjustResize) so
+    // KeyboardAvoidingView can keep the comment composer / actions visible.
+    softwareKeyboardLayoutMode: 'resize',
     googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? './google-services.json',
     adaptiveIcon: {
       backgroundColor: '#E6F4FE',

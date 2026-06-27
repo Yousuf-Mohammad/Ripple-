@@ -8,7 +8,8 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors, fontSize, layout, radius, spacing } from '../theme';
+import { Ionicons } from '@expo/vector-icons';
+import { colors, fontFamily, fontSize, layout, lineHeight, radius, shadow, spacing } from '../theme';
 
 export interface AuthScreenProps {
   title: string;
@@ -18,8 +19,8 @@ export interface AuthScreenProps {
 
 /**
  * Shared layout for the auth forms: safe area + keyboard avoidance + scroll, with
- * a centered card capped at `layout.maxContentWidth` so it reads well on phones
- * and tablets alike (§6.5).
+ * a branded, elevated card capped at `layout.maxContentWidth` so it reads well on
+ * phones and tablets alike (§6.5).
  */
 export function AuthScreen({ title, subtitle, children }: AuthScreenProps) {
   return (
@@ -33,10 +34,15 @@ export function AuthScreen({ title, subtitle, children }: AuthScreenProps) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
+          <View style={styles.brand}>
+            <View style={styles.logo}>
+              <Ionicons name="water" size={32} color={colors.textInverse} />
+            </View>
+          </View>
           <View style={styles.card}>
             <Text style={styles.title}>{title}</Text>
             {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
-            {children}
+            <View style={styles.form}>{children}</View>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -57,6 +63,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.lg,
+    gap: spacing.lg,
+  },
+  brand: {
+    alignItems: 'center',
+  },
+  logo: {
+    width: 64,
+    height: 64,
+    borderRadius: radius.lg,
+    backgroundColor: colors.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...shadow.md,
   },
   card: {
     width: '100%',
@@ -66,18 +85,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.border,
     padding: spacing.xl,
-    gap: spacing.md,
+    gap: spacing.xs,
+    ...shadow.sm,
   },
   title: {
     fontSize: fontSize.xxl,
-    fontWeight: '700',
-    color: colors.primary,
+    fontFamily: fontFamily.bold,
+    color: colors.text,
     textAlign: 'center',
   },
   subtitle: {
     fontSize: fontSize.md,
+    fontFamily: fontFamily.regular,
     color: colors.textMuted,
     textAlign: 'center',
-    marginBottom: spacing.sm,
+    lineHeight: lineHeight.md,
+    marginBottom: spacing.md,
+  },
+  form: {
+    gap: spacing.md,
   },
 });

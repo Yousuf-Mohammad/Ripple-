@@ -3,7 +3,7 @@ import { useDebouncedValue } from '../hooks/useDebouncedValue';
 import { useFeed, type UseFeedResult } from '../hooks/useFeed';
 
 export interface FeedContextValue extends UseFeedResult {
-  /** Raw filter input (bound to the UsernameFilter). */
+  /** Raw filter input (bound to the FeedSearchBar). */
   filterText: string;
   setFilterText: (text: string) => void;
   /** Debounced, trimmed username the feed is currently loaded for. */

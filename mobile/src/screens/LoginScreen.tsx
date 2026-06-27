@@ -8,7 +8,7 @@ import { ErrorBanner } from '../components/ErrorBanner';
 import { FormField } from '../components/FormField';
 import { PrimaryButton } from '../components/PrimaryButton';
 import type { AuthStackParamList } from '../navigation/types';
-import { colors, fontSize, spacing } from '../theme';
+import { colors, fontFamily, fontSize, spacing } from '../theme';
 import { fieldErrorsFromApiError, validateLogin } from '../utils/validation';
 
 type FieldErrors = Partial<Record<'emailOrUsername' | 'password', string>>;
@@ -123,9 +123,11 @@ const styles = StyleSheet.create({
   link: {
     alignItems: 'center',
     paddingVertical: spacing.sm,
+    marginTop: spacing.xs,
   },
   linkText: {
     color: colors.primary,
-    fontSize: fontSize.sm,
+    fontSize: fontSize.md,
+    fontFamily: fontFamily.semibold,
   },
 });

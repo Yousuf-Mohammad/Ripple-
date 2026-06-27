@@ -6,7 +6,7 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import { colors, fontSize, radius, spacing } from '../theme';
+import { colors, fontFamily, fontSize, radius, shadow, spacing } from '../theme';
 
 export interface PrimaryButtonProps {
   label: string;
@@ -16,14 +16,22 @@ export interface PrimaryButtonProps {
   style?: StyleProp<ViewStyle>;
 }
 
-/** Themed primary action button with loading + disabled states. */
+/** Themed primary action button with press feedback, loading + disabled states. */
 export function PrimaryButton({ label, onPress, loading, disabled, style }: PrimaryButtonProps) {
   const isDisabled = disabled || loading;
   return (
     <Pressable
-      style={[styles.button, isDisabled && styles.buttonDisabled, style]}
+      style={({ pressed }) => [
+        styles.button,
+        !isDisabled && shadow.md,
+        pressed && !isDisabled && styles.buttonPressed,
+        isDisabled && styles.buttonDisabled,
+        style,
+      ]}
       onPress={onPress}
       disabled={isDisabled}
+      accessibilityRole="button"
+      accessibilityState={{ disabled: !!isDisabled, busy: !!loading }}
     >
       {loading ? (
         <ActivityIndicator color={colors.textInverse} />
@@ -41,14 +49,20 @@ const styles = StyleSheet.create({
     paddingVertical: spacing.md,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 48,
+    minHeight: 50,
+  },
+  // Press feedback: a touch darker + slightly inset (no layout shift).
+  buttonPressed: {
+    backgroundColor: colors.primaryDark,
+    transform: [{ scale: 0.985 }],
   },
   buttonDisabled: {
-    opacity: 0.5,
+    backgroundColor: colors.borderStrong,
   },
   text: {
     color: colors.textInverse,
     fontSize: fontSize.md,
-    fontWeight: '600',
+    fontFamily: fontFamily.semibold,
+    letterSpacing: 0.2,
   },
 });

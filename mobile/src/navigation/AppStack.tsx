@@ -6,7 +6,7 @@ import { usePushNotifications } from '../notifications/usePushNotifications';
 import { CommentsScreen } from '../screens/CommentsScreen';
 import { CreatePostScreen } from '../screens/CreatePostScreen';
 import { FeedScreen } from '../screens/FeedScreen';
-import { colors } from '../theme';
+import { colors, fontFamily, fontSize } from '../theme';
 import type { AppStackParamList } from './types';
 
 const Stack = createNativeStackNavigator<AppStackParamList>();
@@ -23,13 +23,20 @@ export function AppStack() {
           screenOptions={{
             headerStyle: { backgroundColor: colors.background },
             headerTintColor: colors.text,
+            headerTitleStyle: {
+              fontFamily: fontFamily.bold,
+              fontSize: fontSize.lg,
+              color: colors.text,
+            },
+            headerShadowVisible: false,
+            contentStyle: { backgroundColor: colors.surface },
           }}
         >
           <Stack.Screen name="Feed" component={FeedScreen} options={{ title: 'Ripple' }} />
           <Stack.Screen
             name="CreatePost"
             component={CreatePostScreen}
-            options={{ title: 'New post' }}
+            options={{ title: 'Create post', presentation: 'modal' }}
           />
           <Stack.Screen
             name="Comments"

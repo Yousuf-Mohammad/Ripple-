@@ -32,3 +32,8 @@ web-build/
 # Internal planning docs (kept local, not published)
 CLAUDE.md
 PLAN.md
+
+# Local agent skills & tooling — Windows junctions that break the EAS upload
+.claude/
+.agents/
+skills-lock.json

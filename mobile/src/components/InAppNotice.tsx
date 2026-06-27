@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import type { RemoteMessage } from '../notifications/fcm';
 import { navigateToPost } from '../notifications/navigationRef';
-import { colors, fontSize, radius, spacing } from '../theme';
+import { colors, fontFamily, fontSize, radius, shadow, spacing } from '../theme';
 
 export interface InAppNoticeProps {
   message: RemoteMessage | null;
@@ -76,10 +76,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.md,
     backgroundColor: colors.text,
-    borderRadius: radius.md,
+    borderRadius: radius.lg,
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     marginTop: spacing.sm,
+    ...shadow.lg,
   },
   textWrap: {
     flex: 1,
@@ -88,11 +89,12 @@ const styles = StyleSheet.create({
   title: {
     color: colors.textInverse,
     fontSize: fontSize.md,
-    fontWeight: '700',
+    fontFamily: fontFamily.semibold,
   },
   body: {
     color: colors.textInverse,
     fontSize: fontSize.sm,
+    fontFamily: fontFamily.regular,
     opacity: 0.9,
   },
   close: {
