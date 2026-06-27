@@ -15,7 +15,7 @@
       "distribution": "internal",
       "developmentClient": false,
       "env": {
-        "EXPO_PUBLIC_API_BASE_URL": "http://192.168.1.102:4000"
+        "EXPO_PUBLIC_API_BASE_URL": "https://ripple-0pci.onrender.com"
       },
       "android": {
         "buildType": "apk"
