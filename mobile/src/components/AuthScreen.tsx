@@ -34,12 +34,13 @@ export function AuthScreen({ title, subtitle, children }: AuthScreenProps) {
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
-          <View style={styles.brand}>
+          
+          <View style={styles.card}>
+            <View style={styles.brand}>
             <View style={styles.logo}>
               <Ionicons name="water" size={32} color={colors.textInverse} />
             </View>
           </View>
-          <View style={styles.card}>
             <Text style={styles.title}>{title}</Text>
             {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
             <View style={styles.form}>{children}</View>
