@@ -23,10 +23,13 @@ This is a monorepo with two apps:
 
 ## Download the app
 
-**Android APK (latest build):**
+**Android APK (download):**
+<https://drive.google.com/file/d/1A_03mfFbRlXdgO5Lxkgo4CPBIGUmKBsc/view?usp=drive_link>
+
+**Build details (Expo):**
 <https://expo.dev/accounts/yousuf_mohammad/projects/ripple/builds/14ad1a3f-80ef-475f-b4da-5ac26981e705>
 
-Open that link on an Android device (or scan its QR) to install. The build talks to the
+Download and open the APK on an Android device to install. The build talks to the
 backend at the URL baked into the `preview` profile (`eas.json` →
 `EXPO_PUBLIC_API_BASE_URL`), so the backend must be running and reachable at that address
 on the same network. To point it elsewhere, change that value and rebuild (see the
